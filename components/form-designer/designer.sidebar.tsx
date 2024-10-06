@@ -77,13 +77,13 @@ const DesignerSidebarElementsMenu = () => {
 const DesignerSidebarElementConfig = <T extends FieldValues>() => {
   const { updateElement, selectedElement } = useDesigner<T>();
   return (
-    <Box className="w-[300px] p-3 py-2">
+    <Box className="w-[300px] py-2">
       <Stack gap={2}>
         <Text ta="center" fw={500} mt={10} fz={14}>
           Config
         </Text>
-        <ScrollArea h={500} w={240} scrollbars="y">
-          <Box w={220}>
+        <ScrollArea h={500} className="w-full" scrollbars="y">
+          <Box className="w-full p-2" >
             {selectedElement && (
               <FormBuilder<any>
                 key={selectedElement?.id}

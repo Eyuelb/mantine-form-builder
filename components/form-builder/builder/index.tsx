@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer } from "react";
 import {
   DeepPartial,
   DefaultValues,
@@ -6,10 +6,10 @@ import {
   FormProvider,
   useForm,
   UseFormProps,
-} from 'react-hook-form';
-import { TField } from '../model';
-import { Stack, StackProps } from '@mantine/core';
-import RenderElements from '../render/render-elements';
+} from "react-hook-form";
+import { TField } from "../model";
+import { Stack, StackProps } from "@mantine/core";
+import RenderElements from "../render/render-elements";
 
 interface Props<T extends FieldValues> {
   fields: TField<T>[];
@@ -27,7 +27,7 @@ const FormBuilder = <T extends FieldValues>({
   onChange,
   resetOnSubmit,
   wrapperProps,
-  children
+  children,
 }: Props<T>) => {
   const [key, reset] = useReducer((value: number) => (value + 1) % 1000000, 0);
   const methods = useForm<T>({
@@ -35,6 +35,10 @@ const FormBuilder = <T extends FieldValues>({
     reValidateMode: "onChange",
   });
   React.useEffect(() => {
+    if (!onChange) {
+      return () => {};
+    }
+
     const subscription = methods.watch((value) => onChange && onChange(value));
     return () => subscription.unsubscribe();
   }, [methods.watch]);

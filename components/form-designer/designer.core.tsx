@@ -39,8 +39,10 @@ import usePersistForm from "@/hooks/usePersistForm";
 
 const FormDesignerComponent = <T extends FieldValues>({
   id,
+  name
 }: {
   id: string;
+  name:string
 }) => {
   const { update } = usePersistForm();
 
@@ -66,7 +68,7 @@ const FormDesignerComponent = <T extends FieldValues>({
         <nav className="flex justify-between border-b-2 p-4 gap-3 items-center">
           <h2 className="truncate font-medium">
             <span className="text-muted-foreground mr-2">Form:</span>
-            form.name
+            {name}
           </h2>
           <div className="flex items-center gap-2">
             <Group className="mb-3  mt-1 gap-1">
@@ -146,7 +148,7 @@ export default function FormDesigner({ id }: { id: string }) {
 
   return (
     <DesignerContextProvider initValue={form?.elements}>
-      <FormDesignerComponent id={id} />
+      <FormDesignerComponent id={id} name={form.name} />
     </DesignerContextProvider>
   );
 }

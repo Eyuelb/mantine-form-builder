@@ -54,7 +54,7 @@ export const theme: Partial<MantineThemeOverride> = {
 
     Input: {
       defaultProps: {
-        size: 'sm',
+        size: 'xs',
       },
     },
     Checkbox: {
@@ -69,22 +69,22 @@ export const theme: Partial<MantineThemeOverride> = {
     },
     TextInput: {
       defaultProps: {
-        size: 'sm',
+        size: 'xs',
       },
     },
     NumberInput: {
       defaultProps: {
-        size: 'sm',
+        size: 'xs',
       },
     },
     Select: {
       defaultProps: {
-        size: 'sm',
+        size: 'xs',
       },
     },
     PasswordInput: {
       defaultProps: {
-        size: 'sm',
+        size: 'xs',
       },
     },
     Breadcrumbs: {
