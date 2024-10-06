@@ -1,57 +1,92 @@
 "use client";
 import usePersistForm from "@/hooks/usePersistForm";
-import { ActionIcon, Button, Group, Table } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Group,
+  Stack,
+  Table,
+  TextInput,
+} from "@mantine/core";
 import { randomId } from "@mantine/hooks";
 import React from "react";
 import { TField } from "../form-builder/model";
 import { IconEye, IconForms, IconPencil, IconTrash } from "@tabler/icons-react";
 import Link from "next/link";
+import { formatDate } from "@/utils/helper";
+import { FieldValues } from "react-hook-form";
+import { modals } from "@mantine/modals";
+import FormBuilder from "../form-builder/builder";
 type TPersistForm = {
   id: string;
   name: string;
   elements: TField<any>[];
 };
 const FormManager = () => {
-  const { getAll, getById, create, update, remove } = usePersistForm();
+  const { getAll, create, remove } = usePersistForm();
 
-  // Example usage
-  const handleCreate = () => {
-    create({
-      id: randomId(),
-      name: "new-name",
-      elements: [],
-    });
-  };
-
-  const handleUpdate = (d: TPersistForm) => {
-    update(d);
-  };
+  const handleCreate = () => {};
 
   const handleDelete = (id: string) => {
     remove(id);
   };
 
   const allFields = getAll();
-  //   const singleField = getById("existing-id");
 
   return (
     <div className="w-full">
       <Table striped captionSide="top">
         <Table.Caption>
-          <Button onClick={handleCreate}>Create Field</Button>
+          <Button
+            onClick={() =>
+              modals.open({
+                children: (
+                  <FormBuilder
+                    fields={[
+                      {
+                        type: "text",
+                        name: "name",
+                        label: "Form Name",
+                      },
+                    ]}
+                    onSubmit={(values) => {
+                      create({
+                        ...values,
+                        id: randomId(),
+                        elements: [],
+                        created_at: new Date().toString(),
+                        updated_at: new Date().toString(),
+                      });
+                      modals.closeAll();
+                    }}
+                  >
+                    <Group justify="flex-end" mt={20}>
+                      <Button type="submit">Submit</Button>
+                    </Group>
+                  </FormBuilder>
+                ),
+              })
+            }
+          >
+            Create Field
+          </Button>
         </Table.Caption>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>ID</Table.Th>
+            <Table.Th>No</Table.Th>
             <Table.Th>Name</Table.Th>
+            <Table.Th>Created at</Table.Th>
+            <Table.Th>Updated at</Table.Th>
             <Table.Th>Action</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
-          {allFields.map((row) => (
+          {allFields.map((row, i) => (
             <Table.Tr key={row.id}>
-              <Table.Td>{row.id}</Table.Td>
+              <Table.Td>{i + 1}</Table.Td>
               <Table.Td>{row.name}</Table.Td>
+              <Table.Td>{formatDate(row.created_at!)}</Table.Td>
+              <Table.Td>{formatDate(row.updated_at!)}</Table.Td>
               <Table.Td>
                 <Group gap={4}>
                   <ActionIcon
@@ -86,5 +121,8 @@ const FormManager = () => {
     </div>
   );
 };
+interface FormProps<T extends FieldValues> {
+  onSubmit: (value: T) => void;
+}
 
 export default FormManager;

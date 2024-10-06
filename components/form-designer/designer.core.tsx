@@ -104,6 +104,7 @@ const FormDesignerComponent = <T extends FieldValues>({
                   update({
                     id: id,
                     elements: elements,
+                    updated_at: new Date().toString(),
                   })
                 }
               >
@@ -118,7 +119,7 @@ const FormDesignerComponent = <T extends FieldValues>({
                   update({
                     id: id,
                     elements: elements,
-                  })
+                    updated_at: new Date().toString(),                  })
                 }
               >
                 <IconEye {...iconDefaultProps} />
