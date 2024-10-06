@@ -41,7 +41,7 @@ To get started with the Form Builder, follow these steps:
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/your-username/form-builder.git
+   git clone https://github.com/Eyuelb/mantine-form-builder
    ```
 
 2. **Navigate to the Project Directory:**
