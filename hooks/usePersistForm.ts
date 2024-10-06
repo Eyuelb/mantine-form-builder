@@ -1,5 +1,7 @@
 import { TField } from "@/components/form-builder/model";
+import showNotification from "@/utils/notification";
 import { useLocalStorage } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 import { useCallback } from "react";
 
 type TPersistForm = {
@@ -28,6 +30,9 @@ const usePersistForm = () => {
   const create = useCallback(
     (field: TPersistForm) => {
       setValue([...value, field]);
+      showNotification({
+        message:"Form Created Successfully"
+      })
     },
     [value, setValue]
   );
@@ -44,6 +49,9 @@ const usePersistForm = () => {
             : field
         )
       );
+      showNotification({
+        message:"Form Updated Successfully"
+      })
     },
     [value, setValue]
   );
@@ -51,11 +59,17 @@ const usePersistForm = () => {
   const remove = useCallback(
     (id: string) => {
       setValue(value.filter((field) => field.id !== id));
+      showNotification({
+        message:"Form Deleted Successfully"
+      })
     },
     [value, setValue]
   );
   const clear = useCallback(() => {
     removeValue();
+    showNotification({
+        message:"Form Cleared Successfully"
+      })
   }, [removeValue]);
   return { getAll, getById, create, update, remove, clear };
 };
