@@ -2,8 +2,6 @@
 
 # Form Builder with Mantine and React Hook Form
 
-![Form Builder Banner](https://via.placeholder.com/1200x400.png?text=Form+Builder+with+Mantine+and+React+Hook+Form) 
-
 ## Table of Contents
 
 - [Introduction](#introduction)
