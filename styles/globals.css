@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "@mantine/core/styles.css";
+@import "@mantine/notifications/styles.css";
+@import "@mantine/dates/styles.css";
+
+/* light mode */
+:root[data-mantine-color-scheme="light"] {
+  --mantine-color-body: #ffffff;
+  --border-color: var(--border-color-light);
+  --card: var(--mantine-color-white);
+}
+
+/* dark mode */
+
+:root[data-mantine-color-scheme="dark"] {
+  --mantine-color-body: #000000;
+  --border-color: var(--mantine-color-gray-4);
+  --card: var(--mantine-color-dark-8);
+}
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.page-container {
+  @apply container mx-auto min-h-screen mt-8;
+}
+.data-checked {
+  @apply bg-[var(--mantine-color-primary-light)] border border-[var(--mantine-color-primary-3)];
+}
+
+/* clerk */
+.cl-rootBox {
+  width: unset;
+}
+.cl-cardBox {
+  box-shadow: none;
+  width: unset;
+  height: unset;
+  max-width: unset;
+  margin: unset;
+  /* background-color: var(--card); */
+  color: var(--mantine-color-text);
+}
+.cl-card {
+  box-shadow: none;
+  width: unset;
+  height: unset;
+  max-width: unset;
+  margin: unset;
+  /* background-color: var(--card); */
+  background-color: transparent;
+  color: var(--mantine-color-text);
+}
+.cl-scrollBox {
+  background-color: transparent;
+  color: var(--mantine-color-text);
+}
+.cl-headerTitle {
+  color: var(--mantine-color-text);
+}
+
+.cl-page {
+  color: var(--mantine-color-text);
+}
+
+.cl-page span {
+  color: var(--mantine-color-text);
+}
+.cl-page p {
+  color: var(--mantine-color-text);
+}
+.cl-page button {
+  color: var(--mantine-color-primary-7);
+}
+:root[data-mantine-color-scheme="dark"] {
+  .cl-button[data-variant="outline"] {
+    /* color: var(--mantine-color-text); */
+    background-color: var(--mantine-color-text);
+  }
+  .cl-formField input {
+    background-color: var(--mantine-color-dark-6);
+    border-color: var(--mantine-color-dark-4);
+    color: var(--mantine-color-text);
+  }
+
+  .cl-formField button {
+    color: var(--mantine-color-text);
+  }
+  .cl-dividerLine {
+    background-color: var(--mantine-color-dark-4);
+  }
+}
+
+.cl-formFieldLabel {
+  color: var(--mantine-color-text);
+}
+.cl-footer {
+  background: transparent;
+  display: hidden;
+}
+
+.cl-footer > :nth-child(2) {
+  display: none;
+}
+.cl-formField {
+  border-radius: var(--mantine-radius-sm);
+}
+
+.cl-input[data-variant="default"]:focus-within {
+  box-shadow:  0 0 2px var(--mantine-primary-color-filled);
+}
+.cl-formField button:hover {
+  color: var(--mantine-color-text);
+  box-shadow:  0 0 2px var(--mantine-primary-color-filled);
+
+}

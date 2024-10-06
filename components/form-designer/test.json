@@ -1,0 +1,30 @@
+[
+  {
+    "id": "2-file-mantine-dr3v9f8ps",
+    "position": 2,
+    "name": "2-file-mantine-iyq2n0tdu",
+    "label": "File",
+    "type": "file",
+    "icon": {}
+  },
+  {
+    "id": "0-text-mantine-4qkpzo1us",
+    "position": 0,
+    "name": "0-text-mantine-jw0j61jim",
+    "label": "Text Input",
+    "type": "text",
+    "icon": {},
+    "placeholder": "",
+    "description": "",
+    "disabled": "",
+    "validation": false
+  },
+  {
+    "id": "1-textarea-mantine-tpf230ahi",
+    "position": 1,
+    "name": "1-textarea-mantine-4qk4vsc2a",
+    "label": "Textarea",
+    "type": "textarea",
+    "icon": {}
+  }
+]
