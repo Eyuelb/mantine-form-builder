@@ -11,8 +11,8 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Bankos Insurance",
-  description: "Bankos Insurance.",
+  title: "Mantine-form-builder",
+  description: "Mantine-form-builder",
 };
 
 export default function RootLayout({
