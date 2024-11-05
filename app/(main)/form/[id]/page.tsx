@@ -26,7 +26,8 @@ export default function Page({
 
   if (!form) {
     return <LoadingOverlay visible />;
-  }
+  } 
+  console.log(form?.elements)
   return (
     <Container className="w-full">
       <Card shadow="md" withBorder>
@@ -40,7 +41,7 @@ export default function Page({
             modals.open({
               children: <pre>{JSON.stringify(values, null, 2)}</pre>,
             })
-          }
+          }  
         >
           <Group justify="flex-end" mt={20}>
             <Button type="submit">Submit</Button>

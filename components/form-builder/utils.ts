@@ -1,5 +1,5 @@
 import { RegisterOptions } from "react-hook-form";
-import { DataItem, ValidationRules } from "./model";
+import { ComparisonType, DataItem, ValidationRules } from "./model";
 type ValidatorProps = {
   fail?: string;
 };
@@ -154,5 +154,38 @@ export function processData({
     }));
   } else {
     return placeholder;
+  }
+}
+
+
+
+export function compareValues(
+  value1: string,
+  value2: string,
+  comparison: ComparisonType = 'equals',
+  caseSensitivity: boolean = true
+): boolean {
+
+  //console.log({value1,value2,comparison,caseSensitivity})
+  if (!caseSensitivity) {
+    value1 = value1?.toLowerCase();
+    value2 = value2?.toLowerCase();
+  }
+
+  switch (comparison) {
+    case "equals":
+      return value1 === value2;
+    case "notEquals":
+      return value1 !== value2;
+    case "contains":
+      return value1?.includes(value2);
+    case "notContains":
+      return !value1?.includes(value2);
+    case "startsWith":
+      return value1?.startsWith(value2);
+    case "endsWith":
+      return value1?.endsWith(value2);
+    default:
+      throw new Error(`Unknown comparison type: ${comparison}`);
   }
 }

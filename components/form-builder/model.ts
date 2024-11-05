@@ -1,4 +1,4 @@
-import { NumberInputProps, StackProps, TextProps } from "@mantine/core";
+import { InputWrapperProps, NumberInputProps, ScrollAreaProps, StackProps, TextProps } from "@mantine/core";
 import {
   FieldPath,
   FieldValues,
@@ -48,7 +48,7 @@ export type TField<T extends FieldValues> = {
   group?: T extends Array<infer U extends FieldValues>
     ? TField<U>[]
     : TField<T[keyof T]>[];
-  dataSource?: {
+  asyncDataSource?: {
     valueKey?: string;
     labelKey?: string | string[];
     url?: string;
@@ -56,6 +56,7 @@ export type TField<T extends FieldValues> = {
     mapData?: (data: any) => DataItem[] | undefined;
   };
   showWhen?: (props: UseFormReturn<T>) => boolean;
+
   disabledWhen?: (props: UseFormReturn<T>) => boolean;
   panelProps?: {
     root?: StackProps;
@@ -63,8 +64,19 @@ export type TField<T extends FieldValues> = {
     description?: TextProps;
     wrapper?: StackProps;
   };
-  rules?: ValidationRules;
+  tableProps?: {
+    root?: ScrollAreaProps;
+    wrapper?: InputWrapperProps;
+  };
+  validationRules?: ValidationRules;
   numberProps?: NumberInputProps;
+  visibleRules?: {
+    fieldName: PathValue<FieldValues, any>;
+    comparison: ComparisonType;
+    caseSensitivity?: boolean;
+    fieldValue: string;
+    whenVisibleRulesPass?: string;
+  };
 };
 
 export interface ValidationRules {
@@ -82,3 +94,10 @@ export interface DataItem {
   label: string;
   value: any;
 }
+export type ComparisonType =
+  | "equals"
+  | "notEquals"
+  | "contains"
+  | "notContains"
+  | "startsWith"
+  | "endsWith";

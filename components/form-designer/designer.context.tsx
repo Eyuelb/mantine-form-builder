@@ -5,6 +5,7 @@ import {
   ReactNode,
   SetStateAction,
   createContext,
+  useCallback,
   useMemo,
   useState,
 } from "react";
@@ -38,7 +39,7 @@ export default function DesignerContextProvider<T extends FieldValues>({
     null
   );
 
-  const addElement = (index: number, element: TField<T>) => {
+  const addElement = useCallback((index: number, element: TField<T>) => {
     setElements((prev) => {
       const newElements = [...prev];
       const { icon, ...other } = element;
@@ -46,13 +47,13 @@ export default function DesignerContextProvider<T extends FieldValues>({
 
       return newElements;
     });
-  };
+  }, []);
 
-  const removeElement = (id: string) => {
+  const removeElement = useCallback((id: string) => {
     setElements((prev) => prev.filter((el) => String(el.id) !== id));
-  };
+  }, []);
 
-  const updateElement = (id: string, element: TField<T>) => {
+  const updateElement = useCallback((id: string, element: TField<T>) => {
     setElements((prev) => {
       const newElements = [...prev];
       const index = newElements.findIndex((el) => String(el.id) === id);
@@ -60,7 +61,7 @@ export default function DesignerContextProvider<T extends FieldValues>({
 
       return newElements;
     });
-  };
+  }, []);
 
   const memoElements = useMemo(() => elements, [elements]);
   const memoSelectedElement = useMemo(() => selectedElement, [selectedElement]);

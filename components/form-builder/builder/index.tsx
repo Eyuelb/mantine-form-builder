@@ -19,6 +19,7 @@ interface Props<T extends FieldValues> {
   wrapperProps?: StackProps;
   defaultValues?: UseFormProps<T>["defaultValues"];
   children?: React.ReactNode;
+  editing?:boolean;
 }
 const FormBuilder = <T extends FieldValues>({
   fields,
@@ -28,6 +29,7 @@ const FormBuilder = <T extends FieldValues>({
   resetOnSubmit,
   wrapperProps,
   children,
+  editing,
 }: Props<T>) => {
   const [key, reset] = useReducer((value: number) => (value + 1) % 1000000, 0);
   const methods = useForm<T>({

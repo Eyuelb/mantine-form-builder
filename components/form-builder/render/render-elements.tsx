@@ -30,7 +30,7 @@ import AsyncSelect from "../fields/async-select";
 import SegmentedInput from "../fields/segment";
 import SwitchInput from "../fields/switch";
 import { ErrorMessage } from "../fields/error-message";
-import { generateValidationRules } from "../utils";
+import { compareValues, generateValidationRules } from "../utils";
 import RadioCardInput from "../fields/radio-card";
 
 interface RenderControllerProps<T extends FieldValues> {
@@ -56,10 +56,10 @@ const RenderController = <T extends FieldValues>({
 
   const { rules, isRequired } = useMemo(
     () => ({
-      rules: generateValidationRules(config.rules),
-      isRequired: config.rules?.required,
+      rules: generateValidationRules(config.validationRules),
+      isRequired: config.validationRules?.required,
     }),
-    [config.rules]
+    [config.validationRules]
   );
   const icon = config.icon ? <config.icon size={16} /> : undefined;
 
@@ -100,14 +100,17 @@ const RenderController = <T extends FieldValues>({
 interface RenderElementsProps<T extends FieldValues> {
   element: TField<T>;
   methods: UseFormReturn<T>;
-}
+  editing?:boolean;
 
+}
 
 const RenderElements = <T extends FieldValues>({
   element,
   methods,
+  editing,
 }: RenderElementsProps<T>) => {
-  const { showWhen, disabledWhen } = element;
+  const { showWhen, disabledWhen, visibleRules } =
+    element;
   const { control } = methods;
   const getFieldElement = (config: TField<T>) => {
     const commonProps = { config, control };
@@ -193,7 +196,7 @@ const RenderElements = <T extends FieldValues>({
               <AsyncSelect
                 {...field}
                 {...defaultProps}
-                dataSource={config.dataSource}
+                dataSource={config.asyncDataSource}
                 data={config.data || []}
               />
             )}
@@ -213,12 +216,14 @@ const RenderElements = <T extends FieldValues>({
           <RenderController<T>
             {...commonProps}
             render={({ field, defaultProps }) => (
-              <RadioGroup {...field} {...defaultProps}>
+              <RadioGroup {...field} {...defaultProps} >
                 {config.data?.map((option) => (
                   <Radio
                     key={option.value}
                     value={option.value}
                     label={option.label}
+                    size="xs"
+                    mt={6}
                   />
                 ))}
               </RadioGroup>
@@ -244,6 +249,7 @@ const RenderElements = <T extends FieldValues>({
                 {...field}
                 checked={Boolean(field.value)}
                 {...defaultProps}
+                size="xs"
               />
             )}
           />
@@ -337,14 +343,30 @@ const RenderElements = <T extends FieldValues>({
     [element.disabled, disabledWhen]
   );
 
+
   const showControl = useCallback(
     (children: React.ReactNode) => {
+      if (visibleRules && visibleRules.comparison) {
+        if(editing) return children
+        const comparisonResult = compareValues(
+          methods.watch(visibleRules.fieldName),
+          visibleRules.fieldValue,
+          visibleRules.comparison,
+          visibleRules.caseSensitivity
+        );
+
+        if (comparisonResult) {
+          return visibleRules.whenVisibleRulesPass === "showField" ? children : null;
+        } else {
+          return visibleRules.whenVisibleRulesPass === "hideField" ? children : null;
+        }
+      }
       return showWhen && !showWhen(methods) ? null : children;
     },
-    [showWhen, methods]
+    [showWhen, visibleRules, methods,editing]
   );
+  
   return showControl(getFieldElement({ ...element, disabled }));
 };
-
 
 export default RenderElements;

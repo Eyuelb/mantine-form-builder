@@ -8,6 +8,7 @@ import { fieldConfigForm } from "./designer.config";
 import useDesigner from "./designer.hook";
 import { TField } from "@/components/form-builder/model";
 import FormBuilder from "@/components/form-builder/builder";
+import { useMemo } from "react";
 
 const ListButton = <T extends FieldValues>({
   element,
@@ -66,28 +67,38 @@ const DesignerSidebarElementsMenu = () => {
       <Text ta="center" fw={500} mt={10} fz={14}>
         Components
       </Text>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 place-items-center px-2">
+      <ScrollArea h={500} className="w-full" offsetScrollbars>
+      <div className="grid grid-cols-1 gap-2 place-items-center px-2">
         {elementsConfig.map((el, i) => (
           <ListButton key={i} element={el} />
         ))}
       </div>
+      </ScrollArea>
+
     </Stack>
   );
 };
 const DesignerSidebarElementConfig = <T extends FieldValues>() => {
-  const { updateElement, selectedElement } = useDesigner<T>();
+  const { updateElement, selectedElement, elements } = useDesigner<T>();
+  const fields = useMemo(()=>elements.map((d) => ({
+    label: d.label as string,
+    value: d.name,
+  })),[elements]);
+  console.log({elements})
   return (
-    <Box className="w-[300px] py-2">
+    <Box className="w-[380px] py-2">
       <Stack gap={2}>
         <Text ta="center" fw={500} mt={10} fz={14}>
           Config
         </Text>
-        <ScrollArea h={500} className="w-full" scrollbars="y">
-          <Box className="w-full p-2" >
+
+      </Stack>
+      <ScrollArea h={500} className="w-full" offsetScrollbars>
+          <Box className="w-full p-2">
             {selectedElement && (
               <FormBuilder<any>
                 key={selectedElement?.id}
-                fields={fieldConfigForm}
+                fields={fieldConfigForm(fields)}
                 defaultValues={selectedElement}
                 onChange={(v) => {
                   selectedElement?.id && updateElement(selectedElement.id, v);
@@ -97,7 +108,6 @@ const DesignerSidebarElementConfig = <T extends FieldValues>() => {
             )}{" "}
           </Box>
         </ScrollArea>
-      </Stack>
     </Box>
   );
 };

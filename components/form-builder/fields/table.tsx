@@ -11,6 +11,7 @@ import {
   InputError,
   InputWrapper,
   Modal,
+  ScrollArea,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconEdit, IconTrash, IconPlus } from "@tabler/icons-react";
@@ -41,7 +42,7 @@ export const TableField: WithForwardRefType<FieldValues> = forwardRef<
 >(
   (
     {
-      field: { name, group },
+      field: { name, group, tableProps },
       label,
       error,
       description,
@@ -54,8 +55,7 @@ export const TableField: WithForwardRefType<FieldValues> = forwardRef<
     const { fields, append, remove, update } = useFieldArray<FieldValues>({
       control: methods.control,
       name: name as ArrayPath<FieldValues>,
-      shouldUnregister:true,
-      
+      shouldUnregister: true,
     });
     const content = inputWrapperOrder!.map((part, key) => {
       switch (part) {
@@ -67,99 +67,111 @@ export const TableField: WithForwardRefType<FieldValues> = forwardRef<
           );
         case "input":
           return (
-            <Stack
+            <Table.ScrollContainer
+              minWidth={260}
+              type="native"
               key="input"
               className="border rounded-md p-3 py-2 "
               style={{
                 borderColor: error ? "var(--mantine-color-error)" : "",
               }}
-              gap="xs"
             >
-              <Group justify="apart" className="w-full justify-between">
-                <span />
-                <Button
-                  leftSection={<IconPlus size={16} stroke={2} />}
-                  onClick={() =>
-                    //   setModal(true)
-                    modals.open({
-                      title: "Add Item",
-                      id: `${name as string}-mod-display`,
-                      modalId: `${name as string}-mod-display`,
-                      children: (
-                        <Display
-                          callback={(value) => append(value as any)}
-                          group={group}
-                          id={`${name as string}-mod-display`}
-                          methods={methods}
-                        />
-                      ),
-                    })
-                  }
-                  size="compact-xs"
-                >
-                  Add
-                </Button>
-              </Group>
-              <Table.ScrollContainer minWidth={260} >
-                <Table striped highlightOnHover withTableBorder withRowBorders withColumnBorders className=" rounded-md">
-                  <Table.Thead>
-                    <Table.Tr >
-                      {group?.map((field, i) => (
-                        <Table.Th fz={12} key={i}>{field.label}</Table.Th>
-                      ))}
-                      <Table.Th fz={12}>Actions</Table.Th>
-                    </Table.Tr>
-                  </Table.Thead>
-                  <Table.Tbody>
-                    {fields.map((value: any, index) => (
-                      <Table.Tr key={index}>
-                        {group?.map((field, i) => (
-                          <Table.Td fz={12} key={i}>
-                            {String(value[field.name])}
-                          </Table.Td>
-                        ))}
-                        <Table.Td>
-                          <Group gap="xs">
-                            <ActionIcon
-                              onClick={() =>
-                                modals.open({
-                                  title: "Edit Item",
-                                  id: `${name as string}-mod-display-edit`,
-                                  modalId: `${name as string}-mod-display-edit`,
-                                  children: (
-                                    <Display
-                                      methods={methods}
-                                      callback={(value) =>
-                                        update(index, value as any)
-                                      }
-                                      value={value}
-                                      group={group}
-                                      id={`${name as string}-mod-display-edit`}
-                                    />
-                                  ),
-                                })
-                              }
-                              variant="outline"
-                              size="sm"
-                            >
-                              <IconEdit size={14} stroke={1.4} />
-                            </ActionIcon>
-                            <ActionIcon
-                              color="red"
-                              onClick={() => remove(index)}
-                              size="sm"
-                              variant="outline"
-                            >
-                              <IconTrash size={14} stroke={1.4} />
-                            </ActionIcon>
-                          </Group>
-                        </Table.Td>
-                      </Table.Tr>
+              <Table
+                striped
+                highlightOnHover
+                withTableBorder
+                withRowBorders
+                withColumnBorders
+                captionSide="top"
+                className=" rounded-md"
+              >
+                <Table.Caption>
+                  <Group justify="apart" className="w-full justify-between">
+                    <span/>
+                    <Button
+                      leftSection={<IconPlus size={16} stroke={2} />}
+                      onClick={() =>
+                        //   setModal(true)
+                        modals.open({
+                          title: "Add Item",
+                          id: `${name as string}-mod-display`,
+                          modalId: `${name as string}-mod-display`,
+                          children: (
+                            <Display
+                              callback={(value) => append(value as any)}
+                              group={group}
+                              id={`${name as string}-mod-display`}
+                              methods={methods}
+                            />
+                          ),
+                        })
+                      }
+                      size="compact-xs"
+                    >
+                      Add
+                    </Button>
+                  </Group>
+                </Table.Caption>
+
+                <Table.Thead>
+                  <Table.Tr>
+                    {group?.map((field, i) => (
+                      <Table.Th fz={12} key={i}>
+                        {field.label}
+                      </Table.Th>
                     ))}
-                  </Table.Tbody>
-                </Table>
-              </Table.ScrollContainer>
-            </Stack>
+                    <Table.Th fz={12}>Actions</Table.Th>
+                  </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>
+                  {fields.map((value: any, index) => (
+                    <Table.Tr key={index}>
+                      {group?.map((field, i) => (
+                        <Table.Td fz={12} key={i}>
+                          {String(value[field.name])}
+                        </Table.Td>
+                      ))}
+                      <Table.Td>
+                        <Group gap="xs">
+                          <ActionIcon
+                            onClick={() =>
+                              modals.open({
+                                title: "Edit Item",
+                                id: `${name as string}-mod-display-edit`,
+                                modalId: `${name as string}-mod-display-edit`,
+                                children: (
+                                  <Display
+                                    methods={methods}
+                                    callback={(value) =>
+                                      update(index, value as any)
+                                    }
+                                    value={value}
+                                    group={group}
+                                    id={`${name as string}-mod-display-edit`}
+                                  />
+                                ),
+                              })
+                            }
+                            variant="outline"
+                            size="sm"
+                          >
+                            <IconEdit size={14} stroke={1.4} />
+                          </ActionIcon>
+                          <ActionIcon
+                            color="red"
+                            onClick={() => remove(index)}
+                            size="sm"
+                            variant="outline"
+                          >
+                            <IconTrash size={14} stroke={1.4} />
+                          </ActionIcon>
+                        </Group>
+                      </Table.Td>
+                    </Table.Tr>
+                  ))}
+                </Table.Tbody>
+              </Table>
+            </Table.ScrollContainer>
           );
         case "description":
           return (
@@ -177,14 +189,14 @@ export const TableField: WithForwardRefType<FieldValues> = forwardRef<
     });
 
     return (
-      <InputWrapper>
+      <InputWrapper {...tableProps?.wrapper}>
         <button ref={ref as any} />
-        {content}
+        <ScrollArea {...tableProps?.root}>{content}</ScrollArea>
       </InputWrapper>
     );
   }
 );
-TableField.displayName = 'TableField'
+TableField.displayName = "TableField";
 const Display = <T extends FieldValues>({
   value,
   group,

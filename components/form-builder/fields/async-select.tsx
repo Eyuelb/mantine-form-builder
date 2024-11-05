@@ -1,3 +1,4 @@
+"use client"
 import { Loader, Select, SelectProps } from "@mantine/core";
 import React, { forwardRef, useMemo, useState } from "react";
 import { DataItem } from "../model";

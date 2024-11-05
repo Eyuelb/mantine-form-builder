@@ -1,19 +1,29 @@
 import { useDraggable, useDroppable } from "@dnd-kit/core";
-import { useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import useDesigner from "./designer.hook";
 import { TField } from "../form-builder/model";
 import { ActionIcon, Box, Group, Paper, Stack } from "@mantine/core";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import RenderElements from "../form-builder/render/render-elements";
+const Element = memo(({ element }: { element: TField<any> }) => {
+  const methods = useForm();
+
+  const memoizedElement = useMemo(() => element, [element]);
+
+  return (
+    <Box className="p-3">
+      <RenderElements element={memoizedElement} methods={methods} editing />
+    </Box>
+  );
+});
+Element.displayName = "Elements";
 
 function DesignerElementWrapper<T extends FieldValues>({
   element,
 }: {
   element: TField<T>;
 }) {
-  const methods = useForm<T>();
-
   const [hovered, setHovered] = useState(false);
 
   const { removeElement, setSelectedElement } = useDesigner<T>();
@@ -87,10 +97,7 @@ function DesignerElementWrapper<T extends FieldValues>({
             </ActionIcon>
           </Group>
         )}
-
-        <Box className="p-3">
-          <RenderElements element={element} methods={methods} />
-        </Box>
+        <Element element={element}/>
       </Paper>
       {topHalf.isOver && (
         <div className="absolute top-0 w-full rounded-md h-[7px] bg-[var(--mantine-color-primary-7)] rounded-b-none" />
